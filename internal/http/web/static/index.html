@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html ng-app="application" lang="en">
+<head>
+    <title>DDrv - Infinite cloud storage using Discord</title>
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <link rel="stylesheet" href="main.css">
+</head>
+<body ng-controller="controller">
+<div id="header">
+    <div>
+        <h1 id="title">DDrv</h1>
+        Discord as infinite cloud storage.
+    </div>
+    <div ng-controller="authController">
+        <button onclick="loginDialog.showModal()" ng-show="config.anonymous && config.login && !authenticated">
+            Login
+        </button>
+        <button ng-click="logout()" ng-show="authenticated">
+            Logout
+        </button>
+        <dialog id="loginDialog">
+            <h3>DDrv Login</h3>
+            <form ng-submit="login()" style="display: flex;align-items: center">
+                <div>
+                    <label for="username">Username:&nbsp;&nbsp;</label>
+                    <input type="text" id="username" ng-model="username"><br>
+                    <label for="password">Password:&nbsp;&nbsp;&nbsp;</label>
+                    <input type="password" id="password" ng-model="password"><br>
+                </div>
+                <div style="margin: 10px">
+                    <button type="submit" ng-disabled="!username || !password">
+                        Login
+                    </button>
+                </div>
+            </form>
+            <span>{{loginErrMessage}}</span>
+        </dialog>
+    </div>
+</div>
+
+<dialog id="createFolderDialog">
+    <form ng-submit="createFolder()" style="display: flex; align-items: center">
+        <label for="createFolderInput">Folder name:&nbsp;&nbsp;</label>
+        <input type="text" id="createFolderInput" ng-model="newFolderName"><br>
+        <button type="submit" style="margin: 10px" ng-disabled="!newFolderName">
+            Create
+        </button>
+    </form>
+    <span>{{createFolderErrorMessage}}</span>
+</dialog>
+
+<dialog id="renameDialog">
+    <form ng-submit="rename()" style="display: flex; align-items: center">
+        <label for="renameFolderInput">New name:&nbsp;&nbsp;</label>
+        <input type="text" id="renameFolderInput" ng-model="newName"><br>
+        <button type="submit" style="margin: 10px">
+            Rename
+        </button>
+    </form>
+    <span>{{renameErrorMessage}}</span>
+</dialog>
+
+<div ng-show="!appCrashed">
+    <div id="toolbar">
+        <div>
+            <button ng-click="load(directory.parent)" ng-show="directory.parent">
+                < Back
+            </button>
+        </div>
+        <div id="toolbar-edit">
+            <button onclick="createFolderDialog.showModal()" ng-show="btnCreateFolder">
+                Create Folder
+            </button>
+            <input type="file" id="fileUpload" style="display: none;"
+                   onchange="angular.element(this).scope().fileChanged(this.files)" multiple/>
+            <button ng-click="upload()" ng-show="btnUploadFile">
+                Upload File
+            </button>
+
+            <button ng-click="copyLink()" ng-show="btnCopyLink">
+                Copy Link
+            </button>
+            <button onclick="renameDialog.showModal()" ng-show="btnRename">
+                Rename
+            </button>
+            <button ng-click="delete()" ng-show="btnDelete">
+                Delete
+            </button>
+        </div>
+    </div>
+    <div>
+        <table>
+            <thead>
+            <tr>
+                <th>
+                    <input type="checkbox" ng-model="selectAllCheckbox" ng-change="selectAll(selectAllCheckbox)">
+                </th>
+                <th class="name-td">Name</th>
+                <th class="size-td">Size</th>
+                <th class="date-td">Modified</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="file in directory.files" ng-class="{'bold': file.dir, 'highlight': file.selected}">
+                <td>
+                    <input type="checkbox" ng-model="file.selected">
+                </td>
+                <td ng-click="file.dir ? load(file.id) : open(file)" class="name-td"> {{file.name}}</td>
+                <td style="text-align: right" class="size-td">{{file.size}}</td>
+                <td style="text-align: right" class="date-td">{{file.mtime | date:'MM/dd/yyyy hh:mma'}}</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div ng-repeat="progress in progressbars" class="progress-bar progress-bar-show-percent">
+        <div class="progress-bar-filled" ng-style="{'width': progress.value + '%'}"
+             data-filled="Uploading {{progress.name}} {{progress.value}} %"></div>
+    </div>
+
+</div>
+<script src="main.js"></script>
+</body>
+</html>

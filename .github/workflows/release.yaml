@@ -1,0 +1,67 @@
+name: Ddrv Binary
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  release-ddrv:
+    name: Release ddrv binary
+    permissions:
+      contents: write
+      packages: write
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [linux, windows, darwin]
+        goarch: ["386", amd64, arm64]
+        exclude:
+          - goarch: "386"
+            goos: darwin
+          - goarch: arm64
+            goos: windows
+          - goarch: "386"
+            goos: windows
+    steps:
+      - uses: actions/checkout@v3
+      - uses: wangyoucao577/go-release-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          project_path: "./cmd/ddrv"
+          binary_name: "ddrv"
+          compress_assets: "OFF"
+          md5sum: false
+          ldflags: "-s -w"
+          asset_name: "ddrv-${{ matrix.goos }}-${{ matrix.goarch }}"
+  release-migrate:
+    name: Release migrate binary
+    permissions:
+      contents: write
+      packages: write
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        goos: [ linux, windows, darwin ]
+        goarch: [ "386", amd64, arm64 ]
+        exclude:
+          - goarch: "386"
+            goos: darwin
+          - goarch: arm64
+            goos: windows
+          - goarch: "386"
+            goos: windows
+    steps:
+      - uses: actions/checkout@v3
+      - uses: wangyoucao577/go-release-action@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          goos: ${{ matrix.goos }}
+          goarch: ${{ matrix.goarch }}
+          project_path: "./cmd/migrate"
+          binary_name: "migrate"
+          compress_assets: "OFF"
+          md5sum: false
+          ldflags: "-s -w"
+          asset_name: "migrate-${{ matrix.goos }}-${{ matrix.goarch }}"

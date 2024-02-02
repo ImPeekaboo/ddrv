@@ -1,0 +1,28 @@
+ddrv:
+  token: your_token_here
+  token_type: 0 # (0 - Bot, 1 - User, 2 - Nitro User, 3 - Basic Nitro User)
+  channels:
+    - channel1
+    - channel2
+
+dataprovider:
+  boltdb:
+    db_path: ./ddrv.db
+  postgres:
+    db_url: postgres://user:password@localhost:port/database?sslmode=disable
+
+frontend:
+  ftp:
+    addr: ":2525"
+    username: username
+    password: password
+    async_write: false
+  http:
+    addr: ":2526"
+    https_addr: ":443"
+    https_crtpath:
+    https_keypath:
+    username: username
+    password: password
+    guest_mode: true
+    async_write: false

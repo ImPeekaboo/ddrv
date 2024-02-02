@@ -1,0 +1,73 @@
+ ______   ______   _______  ____   ____
+|_   _ `.|_   _ `.|_   __ \|_  _| |_  _|
+  | | `. \ | | `. \ | |__) | \ \   / /
+  | |  | | | |  | | |  __ /   \ \ / /
+ _| |_.' /_| |_.' /_| |  \ \_  \ ' /
+|______.'|______.'|____| |___|  \_/
+=========================================
+Not-so-conventional tool to exploit Discord's unlimited file attachment feature for an endless cloud storage solution.
+You're welcome.
+
+
+HIGHLIGHTS
+----------
+- Supports multiple protocols, HTTP and FTP (Yes you can mount as fuse using rclone).
+- The frontend is robust. Works with web browsers (HTTP), Filezilla, RClone, Windows Explorer, Ubuntu (Nautilus), and many more.
+- For storing file metadata, PostgreSQL and BoltDB (key/value store in pure Go) data providers are supported.
+- HTTP supports partial downloads, so you can use multi-threaded download managers and stream video directly to video players.
+
+
+NEW IN VERSION 2
+----------------
+- Ditched webhooks for bot tokens. Bot tokens were necessary to renew attachment url signature.
+- Discord attachment URL signature? Pfft. Found a workaround.
+- Zerolog logging library now. The standard one was just meh.
+- Configuration's now in "config.yaml" instead of ".env". Because consistency is overrated.
+- Added a new disk-based dataprovider using boltdb. For those who can't handle a full setup.
+- Webdav is out. It was a slow, broken mess and complete waste of time
+
+
+REQUIREMENTS
+-------------
+- Discord bot token. Make sure "message content intent" is on.
+- PostgreSQL - Optional (Data provider)
+
+
+USAGE
+-----
+- Get latest binary and config file from release page for your os/platform.
+- Update config.yaml according to your use case
+- Start Linux / Macos - './ddrv --config=config.yaml'
+- Start Windows - 'ddrv --config=config.yaml'
+
+
+USAGE DOCKER
+------------
+- Prepare config.yaml, find a sample config at 'https://github.com/forscht/ddrv/blob/main/config/config_example.yaml'
+- docker run -p="2525:2525" -p="2526:2526" -v="./config.yaml:/app/config.yaml" --rm --name=ddrv forscht/ddrv
+
+
+BUILD FROM SOURCE
+-----------------
+- Clone this repository
+- Command to build - 'go build -ldflags="-s -w" -o ddrv ./cmd/ddrv'
+
+
+CONFIGURATION FILE
+------------------
+- Find a sample config at 'https://github.com/forscht/ddrv/blob/main/config/config_example.yaml'.
+- ddrv automatically searches for a file named 'config.yaml' in below places
+    - ./config.yaml (current directory)
+    - $HOME/.config/ddrv/config.yaml
+- Alternatively, you can specify a different configuration file by using 'ddrv --config=/path-to-config/config.yaml'.
+
+
+SUPPORT
+-------
+- Create GitHub issue at - 'https://github.com/forscht/ddrv/issues'
+- Discord Server - 'https://discord.gg/bdxkPSEKzG'
+
+
+TODO
+----
+- Move pkg/ddrv to separate repository

@@ -1,0 +1,191 @@
+@import url('https://fonts.googleapis.com/css2?family=Ubuntu&display=swap');
+
+:root {
+    --headings-color: #084ccf;
+    --headings-font: 'Noto Sans Symbols 2';
+}
+
+body {
+    max-width: 50rem;
+    margin: auto;
+    padding: 0 4%;
+    font: 1.1rem 'Ubuntu', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+    background-color: #f6f5f0;
+}
+
+table {
+    border-collapse: collapse;
+    table-layout: auto;
+    width: 100%;
+}
+
+table tbody tr {
+    border-top: 1px solid;
+}
+table thead tr {
+    font-size: 1.2rem;
+    font-weight: bolder;
+}
+
+table td, th {
+    cursor: default;
+    text-align: justify;
+}
+
+
+th:first-child,
+td:first-child {
+    width: 20px;
+}
+
+th:nth-child(2),
+td:nth-child(2) {
+    overflow: hidden;
+    max-width: 5rem;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+th:nth-child(3),
+td:nth-child(3) {
+    text-align: right;
+    min-width: 2rem;
+    max-width: 2rem;
+}
+
+th:nth-child(4),
+td:nth-child(4) {
+    text-align: center;
+    min-width: 2.5rem;
+    max-width: 2.5rem;
+}
+
+table tbody tr:hover {
+    background-color: #ddeeff;
+}
+
+@media (max-width: 50rem) {
+    td:nth-child(4), th:nth-child(4) {
+        display: none;
+    }
+}
+
+h1, h2, h3 {
+    color: var(--headings-color);
+    margin: 0;
+}
+
+button {
+    border: 1px solid #1d67f6;
+    background-color: #ddeeff;
+    color: #084ccf;
+    font-size: inherit;
+    padding: 2px 8px;
+    cursor: pointer;
+    transition: background-color 0.05s ease;
+}
+
+button:hover:not(:disabled) {
+    background-color: #b9d0ff; /* Or any darker blue color of your choice */
+}
+
+button:active:not(:disabled) {
+    border: 1px solid #1d67f6;
+    background-color: #ddeeff;
+    color: #084ccf;
+    font-size: inherit;
+    padding: 2px 8px;
+    cursor: pointer;
+}
+
+button:disabled {
+    border: 1px solid #d0cabc;
+    background-color: #e2e5e9;
+    color: #d0cabc;
+    cursor: default;
+}
+
+
+dialog {
+    border: 2px solid #1f293c;
+    background-color: #f6f5f0;
+}
+
+dialog::backdrop {
+    background: #0000009c;
+    backdrop-filter: blur(3px);
+}
+
+#title {
+    font-size: 2.5rem;
+}
+
+#header {
+    display: flex;
+    padding-top: 2rem;
+    justify-content: space-between;
+}
+
+#toolbar {
+    display: flex;
+    padding: 2rem 5px 1rem;
+    justify-content: space-between;
+}
+
+.highlight {
+    background-color: #ddeeff;
+}
+
+.bold {
+    font-weight: bold;
+}
+
+/*Copied from terminal css*/
+.progress-bar {
+    height: 8px;
+    background-color: #ddeeff;
+    margin: 12px 0;
+}
+
+.progress-bar.progress-bar-show-percent {
+    margin-top: 38px;
+}
+
+.progress-bar-filled {
+    background-color: #1d67f6;
+    height: 100%;
+    transition: width 0.3s ease;
+    position: relative;
+    width: 0;
+}
+
+.progress-bar-filled::before {
+    content: "";
+    border: 6px solid transparent;
+    border-top-color: #1d67f6;
+    position: absolute;
+    top: -12px;
+    right: -6px;
+}
+
+.progress-bar-filled::after {
+    color: #1d67f6;
+    content: attr(data-filled);
+    display: block;
+    font-size: 12px;
+    white-space: nowrap;
+    position: absolute;
+    border: 6px solid transparent;
+    top: -38px;
+    right: 0;
+    -ms-transform: translateX(50%);
+    transform: translateX(50%);
+}
+
+.progress-bar-no-arrow > .progress-bar-filled::before,
+.progress-bar-no-arrow > .progress-bar-filled::after {
+    content: "";
+    display: none;
+    visibility: hidden;
+    opacity: 0;
+}

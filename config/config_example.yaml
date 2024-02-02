@@ -1,0 +1,101 @@
+# Core configuration settings for ddrv
+ddrv:
+  # Discord bot/user token. This token is used to authenticate your bot with Discord's API.
+  # Env: TOKEN
+  token: your_token_here
+  # Determines the type of token used to authenticate the bot with Discord's API and also the maximum chunk size for attachment.
+  # Available options are:
+  #   0 - Bot token, max chunk size: 25 MB
+  #   1 - User token, max chunk size: 25 MB
+  #   2 - Nitro User token, max chunk size: 500 MB
+  #   3 - Nitro Basic User token, max chunk size: 50 MB
+  # Env: TOKEN_TYPE
+  token_type: 0
+  # List of Discord channel IDs. The bot token user must have "See Channel", "Send Message", "Create Attachment", and "Read Message History" permissions on these channels.
+  # Env: CHANNELS=channel1,channel2
+  channels:
+    - channel1
+    - channel2
+  # Defines the maximum size (in bytes) of chunks to be sent via Discord API.
+  # You should probably never touch this unless you know what you're doing.
+  # This setting impacts how data is chunked before being sent to Discord.
+  # Chunk_size:
+
+# Data provider configuration
+# ddrv can use any one data provider at a time.
+# If you want to use postgres as dataprovider, comment out boltdb part
+dataprovider:
+  boltdb:
+    # File path for BoltDB database file.
+    # BoltDB is a simple key-value store that ddrv uses to store filesystem metadata locally.
+    # Env: BOLTDB_DB_PATH
+    db_path: ./ddrv.db
+  postgres:
+    # PostgreSQL database URL.
+    # Format: postgres://user:password@host:port/database
+    # Use "?sslmode=disable" for local or unencrypted connections.
+    # PostgreSQL is used for storing filesystem metadata in a more scalable and networked environment.
+    # Env: POSTGRES_DB_URL
+    db_url: postgres://user:password@localhost:port/database?sslmode=disable
+
+# Frontend Configuration
+# This section defines the settings for the user interfaces that allow access to ddrv storage.
+frontend:
+  ftp:
+    # FTP server address.
+    # Format: ":port". Set to empty to disable the FTP server.
+    # The FTP server provides file transfer capabilities using the FTP protocol.
+    # Env: FTP_ADDR
+    addr: ":2525"
+    # If username and password both are blank, authentication will be disabled
+    # FTP server username.
+    # Env: FTP_USERNAME
+    username: username
+    # FTP server password.
+    # Env: FTP_PASSWORD
+    password: password
+    # Range of ports for passive FTP connections.
+    # Format: "startPort-endPort". Necessary for cloud-hosted or NAT-traversed environments.
+    # Important for enabling PASV mode, which may be required if your ISP or network configuration restricts port forwarding.
+    # port_range: "40000-50000"
+    # Enables concurrent file uploads to Discord, resulting in faster file transfers.
+    # Note that this will use more RAM, approximately (chunkSize * number of webhooks) + 20% extra bytes.
+    # Use with caution based on your system's memory capacity.
+    # Env: FTP_ASYNC_WRITE
+    async_write: false
+  http:
+    # HTTP server address.
+    # Format: ":port". Set to empty to disable the HTTP server.
+    # The HTTP server provides file transfer and management capabilities via a web interface.
+    # Env: HTTP_ADDR
+    addr: ":2526"
+    # HTTPS server address configuration.
+    # Format: ":port" (e.g., ":443").
+    # This is typically set to port 443 for HTTPS.
+    # Note: HTTPS server will only start if `https_addr`, `https_keypath`, and `https_crtpath` are all provided.
+    # Env: HTTPS_ADDR
+    https_addr: ":443"
+    # Path to the HTTPS certificate file.
+    # This certificate is used in SSL/TLS for HTTPS to verify the server's identity.
+    # Env: HTTPS_CRTPATH
+    https_crtpath:
+    # Path to the HTTPS private key file.
+    # This key is part of the SSL/TLS certification used for securing HTTPS connections.
+    # Env: HTTPS_KEYPATH
+    https_keypath:
+    # If username and password both are blank, authentication will be disabled
+    # HTTP server username.
+    # Env: HTTP_USERNAME
+    username: username
+    # HTTP server password.
+    # Env: HTTP_PASSWORD
+    password: password
+    # Enables or disables guest mode.
+    # When enabled, users can access the HTTP interface in READONLY mode without authentication.
+    # Env: HTTP_GUEST_MODE
+    guest_mode: true
+    # Enables concurrent file uploads to Discord, resulting in faster file transfers.
+    # Note that this will use more RAM, approximately (chunkSize * number of webhooks) + 20% extra bytes.
+    # Use with caution based on your system's memory capacity.
+    # Env: HTTP_ASYNC_WRITE
+    async_write: false
